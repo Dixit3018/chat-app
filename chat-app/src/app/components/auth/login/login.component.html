@@ -1,0 +1,47 @@
+<div class="header-text">Chat App</div>
+<div class="container">
+
+  <div class="box-container">
+  <div class="box-wrapper">
+    <form class="form-wrap" [formGroup]="loginForm">
+      <div class="form-element">
+        <div class="form-header-text">Login</div>
+        <label for="uname" class="form-label">Username</label>
+        <input
+          type="text"
+          id="uname"
+          class="form-control"
+          placeholder="Enter Username"
+          formControlName="username"
+        />
+      </div>
+      <div class="form-element">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="Enter Password"
+          formControlName="password"
+        />
+      </div>
+
+
+        <div class="button-wrapper">
+          <button class="btn btn-primary w-100" [disabled]="this.loginForm.invalid || authStore.isLoading()" (click)="onLogin()">
+            @if(authStore.isLoading()){
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              Loging in....
+            }
+            @else {
+              Login
+            }
+            </button>
+          <button type="button" class="btn btn-light w-100" [routerLink]="'/register'" >Signup</button>
+        </div>
+    </form>
+  </div>
+  </div>
+</div>

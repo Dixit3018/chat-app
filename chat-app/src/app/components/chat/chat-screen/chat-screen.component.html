@@ -1,0 +1,107 @@
+    <!-- selected chat -->
+
+      @if (selectedUser) {
+      <div class="selected-user-wrap">
+        <div class="d-flex align-items-center gap-2">
+          <img
+            [src]="
+              selectedUser.image || 'https://bootdey.com/img/Content/user_3.jpg'
+            "
+            width="40px"
+            height="40px"
+            class="rounded-circle"
+            alt="user-img"
+          />
+          <span>{{ selectedUser.username }}</span>
+        </div>
+      </div>
+      <div class="chat-message" #chatContainer>
+        <ul class="chat">
+          @for (message of messageStore.messages(); track $index) {
+          @if(message.sender === selectedUser._id){
+          <li class="left clearfix text-decoration-none">
+            <span class="chat-img pull-left">
+              <img
+                [src]="
+                  selectedUser.image ||
+                  'https://bootdey.com/img/Content/user_3.jpg'
+                "
+                alt="User Avatar"
+              />
+            </span>
+            <div class="chat-body clearfix text-decoration-none">
+              <div class="header">
+                <strong class="primary-font">{{
+                  selectedUser.username | titlecase
+                }}</strong>
+                <!-- <small class="pull-right text-muted"
+                  ><i class="fa fa-clock-o"></i> 12 mins ago</small
+                > -->
+              </div>
+              <p [innerHTML]="message.message"></p>
+            </div>
+          </li>
+          } @else {
+          <li class="right clearfix text-decoration-none">
+            <span class="chat-img pull-right">
+              <img
+                [src]="
+                  authStore.user()?.user?.image ||
+                  'https://bootdey.com/img/Content/user_3.jpg'
+                "
+                alt="User Avatar"
+              />
+            </span>
+            <div class="chat-body clearfix text-decoration-none">
+              <div class="header">
+                <strong class="primary-font">{{
+                  authStore.user()?.user?.username | titlecase
+                }}</strong>
+                <!-- <small class="pull-right text-muted"
+                  ><i class="fa fa-clock-o"></i> 13 mins ago</small
+                > -->
+              </div>
+              <p [innerHTML]="message.message"></p>
+            </div>
+          </li>
+          } } @empty { @if(messageStore.isLoading()){
+          <div
+            class="h-100 w-100 d-flex align-items-center justify-content-center"
+          >
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          } @else {
+          <div class="alert alert-warning" role="alert">
+            Start messaging now
+          </div>
+          } }
+        </ul>
+      </div>
+      <div class="chat-box bg-white">
+        <div class="input-group">
+          <textarea
+            class="form-control"
+            [(ngModel)]="content"
+            [style.height]="textareaHeight"
+            rows="2"
+            (keyup)="onSendMessaageByTextBox($event)"
+          ></textarea>
+          <span class="input-group-btn">
+            <button
+              class="btn btn-success no-rounded"
+              type="button"
+              (click)="onSendMessaage()"
+            >
+              Send
+            </button>
+          </span>
+        </div>
+        <!-- /input-group -->
+      </div>
+      } @else {
+      <div class="d-flex align-items-center justify-content-center h-100">
+        <h2>Select a person to start the conversation</h2>
+      </div>
+      }

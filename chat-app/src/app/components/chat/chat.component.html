@@ -1,0 +1,55 @@
+@if(authStore.isLoading() || userStore.isLoading()){
+<div class="h-100 w-100 d-flex align-items-center justify-content-center">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+} @else {
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 bg-white">
+      <div class="row border-bottom padding-sm">
+        <div class="d-flex align-items-center justify-content-between p-2">
+          <div class="user-wrap">
+            <img
+              class="user-profile-img"
+              [src]="authStore.user()?.user?.image"
+              alt=""
+            />
+            <span>{{ authStore.user()?.user?.username | titlecase }}</span>
+          </div>
+          <button class="btn btn-sm btn-danger" (click)="onLogout()">
+            Logout
+          </button>
+        </div>
+      </div>
+      <!-- member list -->
+      <ul class="friend-list">
+        @for (user of userStore.users(); track $index) {
+        <li (click)="onSelectUser(user)">
+          <a class="clearfix text-decoration-none">
+            <img
+              [src]="user.image || 'https://bootdey.com/img/Content/user_3.jpg'"
+              alt="user-img"
+              class="img-circle"
+            />
+            <div class="friend-name">
+              <strong>{{ user.username }}</strong>
+            </div>
+            <div class="last-message text-muted">
+              {{ user?.lastMessage?.message }}
+            </div>
+            <small class="time text-muted">{{ user?.lastMessage?.createdAt | date: 'dd-mm-yyyy' }}</small>
+            <small class="chat-alert label label-danger">1</small>
+          </a>
+        </li>
+        }
+      </ul>
+    </div>
+
+    <div class="col-md-8 bg-white">
+      <app-chat-screen [selectedUser]="selectedUser" />
+    </div>
+  </div>
+</div>
+}
